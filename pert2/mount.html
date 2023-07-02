@@ -17,11 +17,11 @@
                 data: {
                     message: 'Halo Dunia',
                 },
-                beforeCreate() {
-                    console.log('before create: ' + 'message = ' + this.message)
+                beforeMount() {
+                    console.log('before mount: ' + 'el = ' + this.$el.textContent)
                 },
-                created() {
-                    console.log('created: ' + 'message = ' + this.message)
+                mounted() {
+                    console.log('mounted: ' + 'el = ' + this.$el.textContent)
                 },
             })
         </script>

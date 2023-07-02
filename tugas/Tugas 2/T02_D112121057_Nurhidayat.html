@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Siklus Objek Vue - Makanan</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Daftar Makanan</h1>
+        <input type="text" v-model="newFood">
+        <button @click="editedFood !== null ? updateFood() : addFood()">{{ editedFood !== null ? 'Update' : 'Simpan' }}</button>
+        <button v-if="editedFood !== null" type="button" @click="cancelEdit()">Batal</button>
+        <ul>
+            <li v-for="(food, index) in foods" :key="index">
+                {{ food }}
+                <button @click="editFood(index)">Edit</button>
+                <button @click="deleteFood(index)">Hapus</button>
+            </li>
+        </ul>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                foods: ['Baso Urat', 'Teh Manis', 'Mie Ayam '],
+                newFood: '',
+                editedFood: null
+            },
+            methods: {
+                addFood: function() {
+                    if (this.newFood.trim() !== '') {
+                        this.foods.push(this.newFood.trim());
+                        this.newFood = '';
+                    }
+                },
+                editFood: function(index) {
+                    this.editedFood = index;
+                    this.newFood = this.foods[index];
+                    console.log(this.editFood);
+                },
+                updateFood: function() {
+                    if (this.editedFood !== null) {
+                        if (this.newFood.trim() !== '') {
+                            this.foods.splice(this.editedFood, 1, this.newFood.trim());
+                            this.newFood = '';
+                            this.editedFood = null;
+                        }
+                    }
+                },
+                cancelEdit() {
+                    this.newFood = '';
+                    this.editedFood = null;
+                },
+                deleteFood: function(index) {
+                    this.foods.splice(index, 1);
+                }
+            },
+            watch: {
+                editedFood: function(value) {
+                    if (value !== null) {
+                        this.$nextTick(() => {
+                            const inputField = this.$refs.newFood;
+                            if (inputField !== undefined && inputField !== null) {
+                                inputField.focus();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
